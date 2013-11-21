@@ -1,0 +1,20 @@
+{
+  "name": "kasperg/phing-github",
+  "description": "Phing tastsk for working with GitHub",
+  "minimum-stability": "stable",
+  "authors": [
+    {
+      "name": "Kasper Garnæs",
+      "email": "kasper.garnaes@gmai.com"
+    }
+  ],
+  "autoload": {
+    "psr-0": {"PhingGitHub\\": "src/"}
+  },
+  "require": {
+    "knplabs/github-api": "1.3.x-dev"
+  },
+  "require-dev": {
+    "phing/phing": "2.6.x"
+  }
+}

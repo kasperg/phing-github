@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+
+<project name="PhingGitHub example" default="init" basedir="."
+         description="This is an example buildfile for GitHub Phing tasks.">
+
+    <target name="init-auth">
+        <propertyprompt promptText="Enter your GitHub username?" propertyName="username" useExistingValue="true"/>
+        <propertyprompt promptText="Enter your GitHub password?" propertyName="password" useExistingValue="true"/>
+    </target>
+
+    <target name="init-repo">
+        <propertyprompt promptText="Enter owner of the repository to work from" propertyName="owner" useExistingValue="true"/>
+        <propertyprompt promptText="Enter name of the repository to work from" propertyName="repo" useExistingValue="true"/>
+    </target>
+
+    <target name="create-assets" depends="init-auth, init-repo">
+        <taskdef name="GitHubCreateAssets" classname="PhingGitHub\CreateAssetsTask" classpath="src" />
+
+        <propertyprompt promptText="What is the name of the release?" propertyName="release" useExistingValue="true"/>
+
+        <php expression="'test-' . rand() . '.txt';" returnProperty="file"/>
+        <append destFile="${file}" text="This is a test"/>
+
+        <GitHubCreateAssets username="${username}" password="${password}" authMethod="password" owner="${owner}" repository="${repo}" releaseName="${release}">
+            <fileset dir=".">
+                <include name="test-*.txt"/>
+            </fileset>
+        </GitHubCreateAssets>
+
+        <delete>
+            <fileset dir=".">
+                <include name="test-*.txt"/>
+            </fileset>
+        </delete>
+    </target>
+
+</project>
