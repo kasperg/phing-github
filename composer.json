@@ -8,6 +8,7 @@
       "email": "kasper.garnaes@gmai.com"
     }
   ],
+  "license": "MIT",
   "autoload": {
     "psr-0": {"PhingGitHub\\": "src/"}
   },
