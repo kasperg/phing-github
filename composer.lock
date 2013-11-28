@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "8d2678450fe1798a8794ec59e6263a09",
+    "hash": "8533b881f2f9a4435e8a85db1d3a56cf",
     "packages": [
         {
             "name": "guzzle/guzzle",
@@ -103,12 +103,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/php-github-api.git",
-                "reference": "2ff0101df04d5c316f38afae2aba37e565cda2ee"
+                "reference": "a51fef98fe971635ec26621a62c480a6194d8ac6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/php-github-api/zipball/2ff0101df04d5c316f38afae2aba37e565cda2ee",
-                "reference": "2ff0101df04d5c316f38afae2aba37e565cda2ee",
+                "url": "https://api.github.com/repos/KnpLabs/php-github-api/zipball/a51fef98fe971635ec26621a62c480a6194d8ac6",
+                "reference": "a51fef98fe971635ec26621a62c480a6194d8ac6",
                 "shasum": ""
             },
             "require": {
@@ -153,7 +153,7 @@
                 "gist",
                 "github"
             ],
-            "time": "2013-11-19 10:49:23"
+            "time": "2013-11-26 17:18:38"
         },
         {
             "name": "symfony/event-dispatcher",
@@ -267,7 +267,7 @@
     "aliases": [
 
     ],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "stability-flags": {
         "knplabs/github-api": 20
     },
