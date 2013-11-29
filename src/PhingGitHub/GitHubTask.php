@@ -122,7 +122,7 @@ abstract class GitHubTask extends Task
     }
 
     /**
-     * Add authentication to the
+     * Add authentication to GitHub API requests.
      */
     protected function authenticate()
     {
