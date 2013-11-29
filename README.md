@@ -5,9 +5,10 @@ phing-github
 
 Currently supported:
 
+* Creating [releases](https://github.com/blog/1547-release-your-software)
 * Creating [release assets](https://github.com/blog/1547-release-your-software)
 
-Pull requests with new tasks (releases, pull requests etc.) are very welcome.
+Pull requests with new tasks (updating releases, creating and closing pull requests etc.) are very welcome.
 
 Usage
 -----

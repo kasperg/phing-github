@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<project name="PhingGitHub example" default="init" basedir="."
+<project name="PhingGitHub example" default="create-release-assets" basedir="."
          description="This is an example buildfile for GitHub Phing tasks.">
 
     <target name="init-auth">
@@ -13,15 +13,21 @@
         <propertyprompt promptText="Enter name of the repository to work from" propertyName="repo" useExistingValue="true"/>
     </target>
 
-    <target name="create-assets" depends="init-auth, init-repo">
+    <target name="create-release" depends="init-auth, init-repo">
+        <taskdef name="GitHubCreateRelease" classname="PhingGitHub\CreateReleaseTask" classpath="src" />
+
+        <php expression="'test-' . rand();" returnProperty="random"/>
+
+        <GitHubCreateRelease username="${username}" password="${password}" authMethod="password" owner="${owner}" repository="${repo}"
+                             tagName="${random}" commitish="master" releaseId="release" />
+    </target>
+
+    <target name="create-release-assets" depends="init-auth, init-repo, create-release">
         <taskdef name="GitHubCreateAssets" classname="PhingGitHub\CreateAssetsTask" classpath="src" />
 
-        <propertyprompt promptText="What is the name of the release?" propertyName="release" useExistingValue="true"/>
+        <append destFile="${random}.txt" text="This is a test for ${random}"/>
 
-        <php expression="'test-' . rand() . '.txt';" returnProperty="file"/>
-        <append destFile="${file}" text="This is a test"/>
-
-        <GitHubCreateAssets username="${username}" password="${password}" authMethod="password" owner="${owner}" repository="${repo}" releaseName="${release}">
+        <GitHubCreateAssets username="${username}" password="${password}" authMethod="password" owner="${owner}" repository="${repo}" releaseId="${release}">
             <fileset dir=".">
                 <include name="test-*.txt"/>
             </fileset>
