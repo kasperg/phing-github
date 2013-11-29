@@ -74,7 +74,7 @@ class CreateAssetsTask extends GitHubTask
                     $this->log('Unable to determine content type for file '. $file, Project::MSG_WARN);
                 }
 
-                $this->client->api('repo')->releases()->assets()->create(
+                $asset = $this->client->api('repo')->releases()->assets()->create(
                     $this->owner,
                     $this->repository,
                     $this->releaseId,
@@ -82,6 +82,7 @@ class CreateAssetsTask extends GitHubTask
                     $contentType,
                     $content
                 );
+                $this->log(sprintf('Created asset %s (ID# %d) for release ID %d', $asset['name'], $asset['id'], $this->releaseId));
             }
         }
     }

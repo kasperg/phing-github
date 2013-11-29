@@ -158,4 +158,18 @@ abstract class GitHubTask extends Task
         // Set authentication.
         $this->client->authenticate($this->username, $this->password, $authMethodMap[$this->authMethod]);
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function log($msg, $level = Project::MSG_INFO)
+    {
+        $message = (!empty($this->username)) ? $this->username . '@' : '';
+        $message .= (!empty($this->owner)) ? $this->owner . '/' : '';
+        $message .= (!empty($this->repository)) ? $this->repository : '';
+        $message .= (!empty($message)) ? ': ' : '';
+        $message .= $msg;
+
+        parent::log($message, $level);
+    }
 }
