@@ -1,12 +1,12 @@
 {
   "name": "kasperg/phing-github",
-  "description": "Phing tastsk for working with GitHub",
+  "description": "Phing tasts for working with GitHub",
   "minimum-stability": "dev",
   "prefer-stable": true,
   "authors": [
     {
       "name": "Kasper Garnæs",
-      "email": "kasper.garnaes@gmai.com"
+      "email": "kasper.garnaes@gmail.com"
     }
   ],
   "license": "MIT",
