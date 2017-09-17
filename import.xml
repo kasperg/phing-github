@@ -1,0 +1,4 @@
+<project>
+    <taskdef name="gh-create-release" classname="\Phing\Github\Tasks\CreateReleaseTask" />
+    <taskdef name="gh-create-assets" classname="\Phing\Github\Tasks\CreateAssetsTask" />
+</project>

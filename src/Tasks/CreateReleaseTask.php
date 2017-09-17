@@ -1,6 +1,6 @@
 <?php
 
-namespace PhingGitHub;
+namespace Phing\Github\Tasks;
 
 use BuildException;
 use FileSet;

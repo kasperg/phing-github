@@ -1,6 +1,6 @@
 <?php
 
-namespace PhingGitHub;
+namespace Phing\Github\Tasks;
 
 use ConfigurationException;
 use Github\Client;
@@ -34,6 +34,16 @@ abstract class GitHubTask extends Task
     /**
      * @var string
      */
+    protected $team;
+
+    /**
+     * @var string
+     */
+    protected $token;
+
+    /**
+     * @var string
+     */
     protected $repository;
 
     /**
@@ -57,6 +67,22 @@ abstract class GitHubTask extends Task
     public function setOwner($owner)
     {
         $this->owner = $owner;
+    }
+
+    /**
+     * @param string $team
+     */
+    public function setTeam($team)
+    {
+        $this->team = $team;
+    }
+
+    /**
+     * @param string $token
+     */
+    public function setToken($token)
+    {
+        $this->token = $token;
     }
 
     /**
@@ -85,15 +111,37 @@ abstract class GitHubTask extends Task
 
     /**
      * @param mixed $authMethod
+     *
+     * @TODO: Set auuth method conditionally.
+     *   - user + pass = password
+     *   - token + team-id/user = http-token
+     *   - client-id + client-secret = client-id
+     *   - jwt = not implemented yet
      */
     public function setAuthMethod($authMethod)
     {
         $this->authMethod = $authMethod;
     }
-
-
+    
     public function init()
     {
+        // Get default properties from project.
+        $propertyMap = array(
+          'setOwner' => 'github.owner',
+          'setTeam' => 'github.team',
+          'setRepository' => 'github.repo',
+          'setToken' => 'github.token',
+          'setPassword' => 'github.pass',
+          'setUsername' => 'github.user',
+          'setAuthMethod' => 'github.auth',
+        );
+
+        foreach ($propertyMap as $method => $property) {
+            if ($property = $this->getProject()->getProperty($property)) {
+                call_user_func(array($this, $method), $property);
+            }
+        }
+
         $httpClient = new HttpClient();
 
         // Setup logging.
@@ -156,7 +204,24 @@ abstract class GitHubTask extends Task
         }
 
         // Set authentication.
-        $this->client->authenticate($this->username, $this->password, $authMethodMap[$this->authMethod]);
+        switch ($this->authMethod) {
+            case "http-token":
+            case 'url-token':
+                $username = isset($this->team) ? $this->team : $this->username;
+                $this->client->authenticate($this->token, $username, $authMethodMap[$this->authMethod]);
+                break;
+            case 'password':
+                $this->client->authenticate($this->username, $this->password, $authMethodMap[$this->authMethod]);
+                break;
+            case 'client-id':
+                // @TODO: Implement jwt.
+                $this->log("Not available yet.");
+                break;
+            case 'jwt':
+                // @TODO: Implement jwt.
+                $this->log("Not available yet.");
+                break;
+        }
     }
 
     /**

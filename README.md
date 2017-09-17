@@ -14,15 +14,13 @@ Usage
 -----
 
 1. Add `kasperg/phing-github` to `requires` in `composer.json`
-2. Define task using [`<taskdef/>`](http://www.phing.info/docs/guide/stable/apbs31.html)
-3. Use the task
-
-See [example.build.xml](https://raw.github.com/kasperg/phing-github/master/example.build.xml) for how this can be done.
+2. Import the tasks: `<import file="${project.basedir}/vendor/kasperg/phing-github/import.xml" />`
+3. Check [build.xml](https://raw.github.com/kasperg/phing-github/master/build.xml) for example targets.
 
 Extend
 ------
 
-1. Implement tasks which subclass `PhingGitHub\GitHubTask`
+1. Implement tasks which subclass `Phing\Github\GitHubTask`
 2. Access [GitHub client](https://github.com/KnpLabs/php-github-api) class using `$this->client`
 3. Call `$this->authenticate()` to support authentication
-4. Update [example.build.xml](https://raw.github.com/kasperg/phing-github/master/example.build.xml)
+4. Update [build.xml](https://raw.github.com/kasperg/phing-github/master/build.xml)
