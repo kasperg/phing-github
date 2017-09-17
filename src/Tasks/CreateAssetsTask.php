@@ -1,6 +1,6 @@
 <?php
 
-namespace PhingGitHub;
+namespace Phing\Github\Tasks;
 
 use BuildException;
 use FileSet;
@@ -73,7 +73,6 @@ class CreateAssetsTask extends GitHubTask
                 if (empty($contentType)) {
                     $this->log('Unable to determine content type for file '. $file, Project::MSG_WARN);
                 }
-
                 $asset = $this->client->api('repo')->releases()->assets()->create(
                     $this->owner,
                     $this->repository,

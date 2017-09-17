@@ -1,0 +1,103 @@
+<?xml version="1.0"?>
+
+<project name="PhingGitHub example" default="create-release-assets" basedir="." description="This is an example buildfile for GitHub Phing tasks.">
+    
+    <!-- Import the github phing tasks. -->
+    <import file="${project.basedir}/import.xml" />
+
+    <if>
+        <available file="${project.basedir}/build.props.local" />
+        <then>
+            <property file="${project.basedir}/build.props.local" />
+        </then>
+    </if>
+
+    <!--
+        Define your credentials within a build properties file that you do never
+        commit to a repository.  The following property names will be automatically
+        loaded in your github task:
+
+        - github.owner =
+        - github.team =
+        - github.token =
+        - github repo =
+        - github.user =
+        - github.pass =
+        - github.auth =
+          - http-token
+          - password
+          - client-id
+          - url-token
+    -->
+
+    <!-- Only asks for credentials wehn properties are not set on global level. -->
+    <target name="init-auth">
+        <if>
+            <or>
+                <equals arg1="${github.auth}" arg2="http-toekn" />
+                <equals arg1="${github.auth}" arg2="http-toekn" />
+            </or>
+            <then>
+                <phingcall target="init-token" />
+                <phingcall target="init-team" />
+            </then>
+            <elseif>
+                <equals arg1="${github.auth}" arg2="password" />
+                <then>
+                    <phingcall target="init-user" />
+                    <phingcall target="init-pass" />
+                </then>
+            </elseif>
+        </if>
+    </target>
+
+    <target name="init-user" hidden="true" unless="github.user">
+        <input message="Enter your GitHub username."  propertyName="github.user" />
+    </target>
+
+    <target name="init-team" hidden="true" unless="github.team">
+        <input message="Enter your GitHub team."  propertyName="github.team" />
+    </target>
+
+    <target name="init-pass" hidden="true" unless="github.pass">
+        <input message="Enter your GitHub password." propertyName="github.pass" hidden="true" />
+    </target>
+
+    <target name="init-token" hidden="true" unless="github.token">
+        <input message="Enter your GitHub token." propertyName="github.token" hidden="true" />
+    </target>
+
+    <!-- Only asks for repository wehn properties are not set on global level. -->
+    <target name="init" depends="init-owner, init-repo" />
+
+    <target name="init-owner" hidden="true" unless="github.owner">
+        <input message="Enter owner of the repository." propertyName="github.owner" />
+    </target>
+
+    <target name="init-repo" hidden="true" unless="github.repo">
+        <input message="Enter name of the repository."  propertyName="github.repo" />
+    </target>
+
+    <!-- Create a github release. -->
+    <target name="create-release" depends="init-auth, init">
+        <php expression="'test-' . rand();" returnProperty="random"/>
+        <gh-create-release tagName="${random}" commitish="master" releaseId="release" />
+    </target>
+
+    <!-- Create github release assets. -->
+    <target name="create-release-assets" depends="init-auth, init-repo, create-release">
+        <append destFile="${random}.txt" text="This is a test for ${random}"/>
+        <gh-create-assets releaseId="${release}">
+            <fileset dir=".">
+                <include name="test-*.txt"/>
+            </fileset>
+        </gh-create-assets>
+
+        <delete>
+            <fileset dir=".">
+                <include name="test-*.txt"/>
+            </fileset>
+        </delete>
+    </target>
+
+</project>
